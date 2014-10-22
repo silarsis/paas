@@ -24,8 +24,8 @@
     "ParameterValue" : "kevinl"
   },
   {
-    "ParameterKey"   : "VPCIdentifier",
-    "ParameterValue" : "vpc-458f7920"
+    "ParameterKey"   : "Subnets",
+    "ParameterValue" : "subnet-b800efcf,subnet-20c30245"
   },
   {
     "ParameterKey"   : "CoreOSSecurityGroup",
