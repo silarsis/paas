@@ -1,5 +1,5 @@
 STACKNAME := kjl
-CF_FILENAME := stack.template
+CF_FILENAME := stack.json
 
 deploy:
 	aws cloudformation create-stack \
@@ -19,3 +19,6 @@ update:
 		--template-body file://$(CF_FILENAME) \
 		--region $(AWS_REGION) \
 		--parameters file://params.json
+
+info:
+	aws cloudformation describe-stacks --region $(AWS_REGION) | jq '.Stacks'

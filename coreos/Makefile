@@ -1,6 +1,6 @@
 STACKNAME := kevinl-coreos
 SSH_KEY := kevinl
-CF_FILENAME := coreos-alpha-hvm.template
+CF_FILENAME := coreos-alpha-hvm.json
 
 deploy:
 	aws cloudformation create-stack \

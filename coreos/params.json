@@ -6,7 +6,7 @@
   {
     "ParameterKey"   : "SpotPrice",
     "ParameterValue" : "0.02"
-  }
+  },
   {
     "ParameterKey"   : "ClusterSize",
     "ParameterValue" : "3"
@@ -22,5 +22,13 @@
   {
     "ParameterKey"   : "KeyPair",
     "ParameterValue" : "kevinl"
+  },
+  {
+    "ParameterKey"   : "VPCIdentifier",
+    "ParameterValue" : "vpc-458f7920"
+  },
+  {
+    "ParameterKey"   : "CoreOSSecurityGroup",
+    "ParameterValue" : "sg-b7844ed2"
   }
 ]
