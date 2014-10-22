@@ -1,0 +1,26 @@
+[
+  {
+    "ParameterKey"   : "InstanceType",
+    "ParameterValue" : "m3.medium"
+  },
+  {
+    "ParameterKey"   : "SpotPrice",
+    "ParameterValue" : "0.02"
+  }
+  {
+    "ParameterKey"   : "ClusterSize",
+    "ParameterValue" : "3"
+  },
+  {
+    "ParameterKey"   : "DiscoveryURL",
+    "ParameterValue" : "https://discovery.etcd.io/f6dbccf5fe5a99c0e1d290b1f52541da"
+  },
+  {
+    "ParameterKey"   : "AdvertisedIPAddress",
+    "ParameterValue" : "private"
+  },
+  {
+    "ParameterKey"   : "KeyPair",
+    "ParameterValue" : "kevinl"
+  }
+]

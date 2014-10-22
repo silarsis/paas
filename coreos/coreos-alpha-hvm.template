@@ -63,11 +63,6 @@
       "AllowedValues": ["private", "public"],
       "Type": "String"
     },
-    "AllowSSHFrom": {
-      "Description": "The net block (CIDR) that SSH is available to.",
-      "Default": "0.0.0.0/0",
-      "Type": "String"
-    },
     "KeyPair" : {
       "Description" : "The name of an EC2 Key Pair to allow SSH access to the instance.",
       "Type" : "String"
@@ -80,35 +75,11 @@
     }
   },
   "Resources": {
-    "CoreOSSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "CoreOS SecurityGroup",
-        "SecurityGroupIngress": [
-          {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Ref": "AllowSSHFrom"}}
-        ]
-      }
-    },
-    "Ingress4001": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupName": {"Ref": "CoreOSSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "4001", "ToPort": "4001", "SourceSecurityGroupId": {
-          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
-        }
-      }
-    },
-    "Ingress7001": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupName": {"Ref": "CoreOSSecurityGroup"}, "IpProtocol": "tcp", "FromPort": "7001", "ToPort": "7001", "SourceSecurityGroupId": {
-          "Fn::GetAtt" : [ "CoreOSSecurityGroup", "GroupId" ]
-        }
-      }
-    },
     "CoreOSServerAutoScale": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
         "AvailabilityZones": {"Fn::GetAZs": ""},
+        "VPCZoneIdentifier": 
         "LaunchConfigurationName": {"Ref": "CoreOSServerLaunchConfig"},
         "MinSize": "3",
         "MaxSize": "12",
@@ -125,6 +96,7 @@
         "InstanceType": {"Ref": "InstanceType"},
         "KeyName": {"Ref": "KeyPair"},
         "SecurityGroups": [{"Ref": "CoreOSSecurityGroup"}],
+        "SpotPrice": "0.02",
         "UserData" : { "Fn::Base64":
           { "Fn::Join": [ "", [
             "#cloud-config\n\n",

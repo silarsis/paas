@@ -1,0 +1,11 @@
+[Unit]
+Description=Mesos Master
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill master
+ExecStartPre=-/usr/bin/docker rm master
+ExecStartPre=/usr/bin/docker pull redjack/mesos-master
+ExecStart=/usr/bin/docker run --name master redjack/mesos-master
+ExecStop=/usr/bin/docker stop master
