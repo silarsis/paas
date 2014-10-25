@@ -21,4 +21,4 @@ update:
 		--parameters file://params.json
 
 info:
-	aws cloudformation describe-stacks --region $(AWS_REGION) | jq '.Stacks'
+	aws cloudformation describe-stacks --stack-name $(STACKNAME) --region $(AWS_REGION)

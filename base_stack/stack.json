@@ -95,6 +95,12 @@
     },
     "AccessIP" : {
       "Value" : { "Ref" : "AccessIP" }
+    },
+    "SubnetA" : {
+      "Value" : { "Ref" : "KJLSubnetA" }
+    },
+    "SubnetB" : {
+      "Value" : { "Ref" : "KJLSubnetB" }
     }
   }
 }
