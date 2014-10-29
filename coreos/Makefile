@@ -23,3 +23,9 @@ update: params.json
 
 params.json:
 	./generate_params.rb
+
+info:
+	aws cloudformation describe-stacks --stack-name $(STACKNAME) --region $(AWS_REGION)
+
+ssh:
+	

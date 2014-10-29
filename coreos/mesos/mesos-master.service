@@ -4,8 +4,8 @@ After=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=-/usr/bin/docker kill master
-ExecStartPre=-/usr/bin/docker rm master
+ExecStartPre=-/usr/bin/docker kill mesos-master
+ExecStartPre=-/usr/bin/docker rm mesos-master
 ExecStartPre=/usr/bin/docker pull redjack/mesos-master
-ExecStart=/usr/bin/docker run --name master redjack/mesos-master
+ExecStart=/usr/bin/docker run --name mesos-master -e MESOS_LOG_DIR=/var/log -e MESOS_ZK=http://localhost:9999 -p 5050:5050 redjack/mesos-master
 ExecStop=/usr/bin/docker stop master

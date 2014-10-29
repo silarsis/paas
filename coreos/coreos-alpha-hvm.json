@@ -80,14 +80,13 @@
     "CoreOSSecurityGroup": {
       "Description": "From the Stack - The Security Group to attach to all instances",
       "Type": "String"
-    }
+    },
   },
   "Resources": {
     "CoreOSServerAutoScale": {
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
         "AvailabilityZones": {"Fn::GetAZs": ""},
-        "VPCZoneIdentifier": { "Ref" : "Subnets" },
         "LaunchConfigurationName": {"Ref": "CoreOSServerLaunchConfig"},
         "MinSize": "3",
         "MaxSize": "12",
@@ -101,9 +100,9 @@
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]},
+        "SecurityGroups": [ {"Ref": "CoreOSSecurityGroup"} ],
         "InstanceType": {"Ref": "InstanceType"},
         "KeyName": {"Ref": "KeyPair"},
-        "SecurityGroups": [{"Ref": "CoreOSSecurityGroup"}],
         "SpotPrice": "0.02",
         "UserData" : { "Fn::Base64":
           { "Fn::Join": [ "", [

@@ -11,4 +11,4 @@ ExecStart=/usr/bin/docker run --name slave redjack/mesos-slave
 ExecStop=/usr/bin/docker stop slave
 
 [X-Fleet]
-X-Conflicts=mesos-slave.service
+Global=true
