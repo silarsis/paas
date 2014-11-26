@@ -7,7 +7,7 @@ TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill slave
 ExecStartPre=-/usr/bin/docker rm slave
 ExecStartPre=/usr/bin/docker pull redjack/mesos-slave
-ExecStart=/usr/bin/docker run --name slave redjack/mesos-slave
+ExecStart=/usr/bin/docker run --name slave -e MESOS_MASTER=http://localhost:9999 -p 5051:5051 redjack/mesos-slave
 ExecStop=/usr/bin/docker stop slave
 
 [X-Fleet]
