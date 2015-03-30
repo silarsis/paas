@@ -14,7 +14,7 @@ params = [
   { 'ParameterKey'   => 'AdvertisedIPAddress', 'ParameterValue' => 'private' },
   {
     'ParameterKey'   => 'DiscoveryURL',
-    'ParameterValue' => 'https://discovery.etcd.io/512ba2e83a8d227672e8a20e69e70efb'
+    'ParameterValue' => 'https://discovery.etcd.io/f1571c62ad9ab09d4e98c4d95af64ae6'
   },
   {
     'ParameterKey'   => 'Subnets',

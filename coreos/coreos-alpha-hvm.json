@@ -4,36 +4,16 @@
   "Mappings" : {
       "RegionMap" : {
 
-          "ap-northeast-1" : {
-              "AMI" : "ami-c93504c8"
-          },
-
-          "sa-east-1" : {
-              "AMI" : "ami-698d3974"
-          },
-
           "ap-southeast-2" : {
-              "AMI" : "ami-05b0dd3f"
+              "AMI" : "ami-7b88f841"
           },
 
           "ap-southeast-1" : {
-              "AMI" : "ami-925071c0"
+              "AMI" : "ami-cecbfa9c"
           },
 
           "us-east-1" : {
-              "AMI" : "ami-50db6138"
-          },
-
-          "us-west-2" : {
-              "AMI" : "ami-75410e45"
-          },
-
-          "us-west-1" : {
-              "AMI" : "ami-830411c6"
-          },
-
-          "eu-west-1" : {
-              "AMI" : "ami-7cb9160b"
+              "AMI" : "ami-4e715d26"
           }
 
       }
@@ -80,7 +60,7 @@
     "CoreOSSecurityGroup": {
       "Description": "From the Stack - The Security Group to attach to all instances",
       "Type": "String"
-    },
+    }
   },
   "Resources": {
     "CoreOSServerAutoScale": {
