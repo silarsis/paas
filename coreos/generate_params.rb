@@ -1,20 +1,28 @@
 #!/usr/bin/env ruby
 
 require 'json'
+require 'uri'
+require 'open-uri'
+
+uri = URI.parse('https://discovery.etcd.io/new')
+params = { :size => "3" }
+uri.query = URI.encode_www_form( params )
+discoveryid = uri.open.read
+puts "New Discovery ID: #{discoveryid}"
 
 stack = JSON.load(`cd ../base_stack && make -s info`)
 outputs = Hash[
   stack['Stacks'][0]['Outputs'].map { |o| [o['OutputKey'], o['OutputValue']] }
 ]
 params = [
-  { 'ParameterKey'   => 'InstanceType', 'ParameterValue' => 'm3.medium' },
-  { 'ParameterKey'   => 'SpotPrice', 'ParameterValue' => '0.02' },
+  { 'ParameterKey'   => 'InstanceType', 'ParameterValue' => 'm3.large' },
+  { 'ParameterKey'   => 'SpotPrice', 'ParameterValue' => '0.05' },
   { 'ParameterKey'   => 'ClusterSize', 'ParameterValue' => '3' },
   { 'ParameterKey'   => 'KeyPair', 'ParameterValue' => 'kevinl' },
   { 'ParameterKey'   => 'AdvertisedIPAddress', 'ParameterValue' => 'private' },
   {
     'ParameterKey'   => 'DiscoveryURL',
-    'ParameterValue' => 'https://discovery.etcd.io/f1571c62ad9ab09d4e98c4d95af64ae6'
+    'ParameterValue' => discoveryid
   },
   {
     'ParameterKey'   => 'Subnets',
