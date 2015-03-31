@@ -36,6 +36,18 @@ fleet_dir() {
   basename $(basename fleet_filename .zip) .tar.gz
 }
 
+marathon_url() {
+  echo "http://$(marathon_public_ip):8080/"
+}
+
+load_start_unit() {
+  set -x
+  ${FLEETCTL} submit $1
+  ${FLEETCTL} load $1
+  ${FLEETCTL} start $1
+  set +x
+}
+
 # Public methods beyond here
 
 install_fleetctl() {
@@ -48,20 +60,12 @@ install_fleetctl() {
   rm -rf fleet_dir
 }
 
-load_start_unit() {
-  set -x
-  ${FLEETCTL} submit $1
-  ${FLEETCTL} load $1
-  ${FLEETCTL} start $1
-  set +x
-}
-
 fleet_deploy() {
   rm -rf deployed
   mkdir -p deployed
   cp mesos-*.service deployed/
   pushd deployed
-  ../fleetctl destroy mesos-*.service
+  fleet_destroy
   load_start_unit "mesos-zookeeper.service"
   wait_for "zookeeper"
   ZK_IP=$(zookeeper_ip)
@@ -77,10 +81,6 @@ fleet_deploy() {
   echo "Marathon available on $(marathon_url)"
 }
 
-marathon_url() {
-  echo "http://$(marathon_public_ip):8080/"
-}
-
 fleet_start() {
   pushd deployed
   ../fleetctl stop mesos-*.service
@@ -88,6 +88,12 @@ fleet_start() {
   ../fleetctl start mesos-*.service
   popd
   ./fleetctl list-units
+}
+
+fleet_destroy() {
+  pushd deployed
+  ../fleetctl destroy mesos-*.service
+  popd
 }
 
 fleet_status() {
@@ -127,9 +133,12 @@ case $1 in
   url)
     echo $(marathon_url)
     ;;
+  destroy)
+    fleet_destroy
+    ;;
   *)
     echo "Unrecognised command"
-    echo "ssh, env, status, start, deploy, build"
+    echo "ssh, env, url, status, deploy, run"
     exit 1
     ;;
 esac
