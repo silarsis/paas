@@ -1,16 +1,15 @@
-STACKNAME := kjl
+STACKNAME := kjlcoreos
 CF_FILENAME := stack.json
 AWS_REGION := ap-southeast-2
 
-deploy:
-	./generate_params.rb
+deploy: params.json
 	aws cloudformation create-stack \
 		--stack-name $(STACKNAME) \
 		--template-body file://$(CF_FILENAME) \
 		--region $(AWS_REGION) \
 		--parameters file://params.json
 
-delete:
+destroy:
 	aws cloudformation delete-stack \
 		--stack-name $(STACKNAME) \
 		--region $(AWS_REGION)
@@ -24,3 +23,6 @@ update:
 
 info:
 	aws cloudformation describe-stacks --stack-name $(STACKNAME) --region $(AWS_REGION)
+
+params.json:
+	./generate_params.rb
