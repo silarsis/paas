@@ -3,7 +3,7 @@
 # Tools to manage a deployed cluster
 
 REGION=ap-southeast-2
-STACK_NAME="kevinl-coreos"
+STACK_NAME="kjlcoreos"
 FLEETCTL="/usr/local/home/silarsis/git/paas/coreos/mesos/fleetctl"
 export FLEETCTL_TUNNEL=$(aws ec2 describe-instances --region=${REGION} --filters="Name=tag-value,Values=${STACK_NAME}" | grep PublicDnsName | cut -d\" -f4 | grep -v '^$' | head -1)
 
@@ -65,7 +65,7 @@ fleet_deploy() {
   mkdir -p deployed
   cp mesos-*.service deployed/
   pushd deployed
-  fleet_destroy
+  #fleet_destroy
   load_start_unit "mesos-zookeeper.service"
   wait_for "zookeeper"
   ZK_IP=$(zookeeper_ip)
