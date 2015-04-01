@@ -154,6 +154,16 @@
         "CidrIp": {"Ref": "MgtNetwork"}
       }
     },
+    "MesosSecurityGroupChronosMgt": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "31001",
+        "ToPort": "31001",
+        "CidrIp": {"Ref": "MgtNetwork"}
+      }
+    },
     "ClusterVPC": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
