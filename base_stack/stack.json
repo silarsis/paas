@@ -56,41 +56,102 @@
     }
   },
   "Resources": {
-    "ZookeeperSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "SecurityGroup for the Zookeeper instances",
-        "SecurityGroupIngress": [
-          {"IpProtocol": "tcp", "FromPort": "222", "ToPort": "22", "CidrIp": {"Ref": "MgtNetwork"}},
-          {"IpProtocol": "tcp", "FromPort": "2181", "ToPort": "2181", "SourceSecurityGroupId": {"Fn::GetAtt" : [ "MesosSecurityGroup", "GroupId" ]}},
-          {"IpProtocol": "tcp", "FromPort": "2888", "ToPort": "2888", "SourceSecurityGroupId": {"Fn::GetAtt" : [ "ZookeeperSecurityGroup", "GroupId" ]}},
-          {"IpProtocol": "tcp", "FromPort": "3888", "ToPort": "3888", "SourceSecurityGroupId": {"Fn::GetAtt" : [ "ZookeeperSecurityGroup", "GroupId" ]}}
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "Zookeeper Security Group"
-          }
-        ]
-      }
-    },
     "MesosSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "SecurityGroup for the Mesos Master instances",
-        "SecurityGroupIngress": [
-          {"IpProtocol": "tcp", "FromPort": "22", "ToPort": "22", "CidrIp": {"Ref": "MgtNetwork"}},
-          {"IpProtocol": "tcp", "FromPort": "80", "ToPort": "80", "CidrIp": "0.0.0.0/0"},
-          {"IpProtocol": "tcp", "FromPort": "443", "ToPort": "443", "CidrIp": "0.0.0.0/0"},
-          {"IpProtocol": "tcp", "FromPort": "5050", "ToPort": "5050", "CidrIp": {"Ref": "MgtNetwork"}},
-          {"IpProtocol": "tcp", "FromPort": "8080", "ToPort": "8080", "CidrIp": {"Ref": "MgtNetwork"}}
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": "Mesos Security Group"
-          }
-        ]
+        "VpcId": {"Ref": "ClusterVPC"},
+        "Tags": [ { "Key": "Name", "Value": "Mesos Security Group" } ]
+      }
+    },
+    "MesosSecurityGroupSSH": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": {"Ref": "MgtNetwork"}
+      }
+    },
+    "MesosSecurityGroupSSH": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": {"Ref": "MgtNetwork"}
+      }
+    },
+    "MesosSecurityGroup80": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": {"Ref": "MgtNetwork"}
+      }
+    },
+    "MesosSecurityGroup443": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": {"Ref": "MgtNetwork"}
+      }
+    },
+    "MesosSecurityGroup2181": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "2181",
+        "ToPort": "2181",
+        "SourceSecurityGroupId": {"Ref": "MesosSecurityGroup"}
+      }
+    },
+    "MesosSecurityGroup2888": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "2888",
+        "ToPort": "2888",
+        "SourceSecurityGroupId": {"Ref": "MesosSecurityGroup"}
+      }
+    },
+    "MesosSecurityGroup3888": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "3888",
+        "ToPort": "3888",
+        "SourceSecurityGroupId": {"Ref": "MesosSecurityGroup"}
+      }
+    },
+    "MesosSecurityGroupMesosMgt": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "5050",
+        "ToPort": "5050",
+        "CidrIp": {"Ref": "MgtNetwork"}
+      }
+    },
+    "MesosSecurityGroupMarathonMgt": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Ref": "MesosSecurityGroup"},
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": {"Ref": "MgtNetwork"}
       }
     },
     "ClusterVPC": {
@@ -155,7 +216,6 @@
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
         "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "AMI" ]},
-        "SecurityGroups": [ {"Ref": "ZookeeperSecurityGroup"}, {"Ref": "MesosSecurityGroup"} ],
         "InstanceType": {"Ref": "InstanceType"},
         "KeyName": {"Ref": "KeyPair"},
         "SpotPrice": {"Ref": "SpotPrice"},
