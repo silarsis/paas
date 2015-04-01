@@ -1,0 +1,22 @@
+{
+    "id": "/chronos",
+    "instances": 1,
+    "cpus": 0.1,
+    "mem": 512,
+    "shell": "false",
+    "args": ["--master", "zk://172.31.16.30:2181/mesos", "--zk_hosts", "172.31.16.30:2181"],
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "image": "tomaskral/chronos",
+            "network": "BRIDGE",
+            "portMappings": [
+                {
+                    "containerPort": 8080,
+                    "hostPort": 0,
+                    "protocol": "tcp"
+                }
+            ]
+        }
+    }
+}
