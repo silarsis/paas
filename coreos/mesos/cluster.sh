@@ -21,8 +21,12 @@ zookeeper_ip() {
   ../fleetctl list-units | grep zookeeper | awk '{ print $2 }' | cut -d'/' -f2
 }
 
-marathon_public_ip() {
-  ${FLEETCTL} list-machines -fields="machine,metadata" | grep $(${FLEETCTL} list-units -fields=unit,machine | grep marathon | awk '{ print $2 }' | cut -d'.' -f1) | awk '{ print $2 }' | cut -d'=' -f2
+unit_public_ip() {
+  ${FLEETCTL} list-machines -fields="machine,metadata" | grep $(${FLEETCTL} list-units -fields=unit,machine | grep $1 | awk '{ print $2 }' | cut -d'.' -f1) | awk '{ print $2 }' | cut -d'=' -f2
+}
+
+chronos_ip() {
+  curl -s $(marathon_url)v2/apps/chronos | jq '.["app"]["tasks"][0]["host"]' # split off the crud and fleetctl list-machines to find the public ip
 }
 
 wait_for() {
@@ -37,7 +41,11 @@ fleet_dir() {
 }
 
 marathon_url() {
-  echo "http://$(marathon_public_ip):8080/"
+  echo "http://$(unit_public_ip mesos-marathon):8080/"
+}
+
+chronos_url() {
+  "http://$(chronos_ip):31001/"
 }
 
 load_start_unit() {
@@ -130,15 +138,18 @@ case $1 in
   run)
     marathon_deploy $2
     ;;
-  url)
+  marathon_url)
     echo $(marathon_url)
+    ;;
+  chronos_url)
+    echo $(chronos_url)
     ;;
   destroy)
     fleet_destroy
     ;;
   *)
     echo "Unrecognised command"
-    echo "ssh, env, url, status, deploy, run"
+    echo "ssh, env, marathon_url, chronos_url, status, deploy, run"
     exit 1
     ;;
 esac
