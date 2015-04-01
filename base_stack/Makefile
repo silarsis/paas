@@ -1,7 +1,9 @@
 STACKNAME := kjl
 CF_FILENAME := stack.json
+AWS_REGION := ap-southeast-2
 
 deploy:
+	./generate_params.rb
 	aws cloudformation create-stack \
 		--stack-name $(STACKNAME) \
 		--template-body file://$(CF_FILENAME) \
