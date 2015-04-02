@@ -26,7 +26,10 @@ unit_public_ip() {
 }
 
 chronos_ip() {
-  curl -s $(marathon_url)v2/apps/chronos | jq '.["app"]["tasks"][0]["host"]' # split off the crud and fleetctl list-machines to find the public ip
+  str=$(curl -s $(marathon_url)v2/apps/chronos | jq '.["app"]["tasks"][0]["host"]' | cut -d'.' -f1)
+  str=${str//-/.}
+  str=${str//\"ip./}
+  echo $(${FLEETCTL} list-machines | grep $str | awk '{ print $3 }' | cut -d'=' -f2)
 }
 
 wait_for() {
@@ -45,7 +48,8 @@ marathon_url() {
 }
 
 chronos_url() {
-  "http://$(chronos_ip):31001/"
+  # XXX Need to figure out how to get the port number
+  echo "http://$(chronos_ip):31000/"
 }
 
 load_start_unit() {
