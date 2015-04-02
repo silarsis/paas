@@ -4,13 +4,13 @@
   "Mappings" : {
     "RegionMap" : {
       "ap-southeast-2" : {
-        "AMI" : "ami-7b88f841"
+        "AMI" : "ami-b9b5c583"
       },
       "ap-southeast-1" : {
-        "AMI" : "ami-cecbfa9c"
+        "AMI" : "ami-f80b3aaa"
       },
       "us-east-1" : {
-        "AMI" : "ami-4e715d26"
+        "AMI" : "ami-323b195a"
       }
     }
   },
